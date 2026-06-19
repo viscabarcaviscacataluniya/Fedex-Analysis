@@ -1,71 +1,317 @@
-```markdown
 # FedEx Logistics Performance Analysis
 
-![Project Status](https://img.shields.io/badge/Status-Complete-brightgreen)
-![Built With](https://img.shields.io/badge/Built%20With-Python-blue)
-
-## Table of Contents
-- [Overview](#overview)
-- [Project Goal](#project-goal)
-- [Dataset](#dataset)
-- [Key Analyses & Insights](#key-analyses--insights)
-- [Solutions & Approaches for Improvement](#solutions--approaches-for-improvement)
-- [Technical Stack](#technical-stack)
-- [How to Use](#how-to-use)
-
 ## Overview
-This project delves into the operational efficiency of FedEx's logistics through a comprehensive analysis of a rich dataset. Spanning 10,324 rows and 33 columns, the dataset captures intricate details of shipment records, including Project Codes, Purchase Order numbers, countries of delivery, shipment modes, vendor terms, line item quantities, freight costs, unit prices, and manufacturing sites. Our objective is to unearth patterns in shipping performance, identify variations in cost, and assess delivery reliability to provide actionable insights. This analysis aims to strategically enhance supply chain planning, optimize cost controls, and elevate FedEx's overall logistics performance.
 
-## Project Goal
-The primary goal of the FedEx Logistics Performance Analysis is to evaluate and improve the efficiency, reliability, and cost-effectiveness of FedEx's delivery services by analyzing their operational logistics data.
+This project analyzes FedEx logistics and supply chain operations using a large-scale shipment dataset containing over **10,000 delivery records** and **33 operational features**. The analysis focuses on identifying inefficiencies in delivery performance, shipment delays, freight costs, and vendor operations through data cleaning, feature engineering, exploratory analysis, and geographical visualization.
 
-## Dataset
-The dataset used for this analysis is `SCMS_Delivery_History_Dataset.csv`.
+The goal of the project is to transform raw logistics data into actionable operational insights that improve delivery reliability, optimize transportation costs, and support strategic supply chain decision-making.
 
-### Data Points Include:
--   **Shipment Identifiers**: ID, Project Code, PQ #, PO / SO #, ASN/DN #
--   **Geographical Information**: Country, Manufacturing Site
--   **Logistics Details**: Managed By, Fulfill Via, Vendor INCO Term, Shipment Mode
--   **Date & Time**: PQ First Sent to Client Date, PO Sent to Vendor Date, Scheduled Delivery Date, Delivered to Client Date, Delivery Recorded Date
--   **Product Information**: Product Group, Sub Classification, Vendor, Item Description, Molecule/Test Type, Brand, Dosage, Dosage Form, Unit of Measure (Per Pack)
--   **Financials & Quantities**: Line Item Quantity, Line Item Value, Pack Price, Unit Price, Freight Cost (USD), Line Item Insurance (USD)
--   **Physical Attributes**: Weight (Kilograms)
--   **Status Flags**: First Line Designation
+---
 
-## Key Analyses & Insights
-Through a methodical approach to data exploration, cleaning, and feature engineering, we've uncovered several critical insights:
+# Business Problem
 
-1.  **Data Quality Assessment**: Identified and addressed missing values in key columns like 'Shipment Mode', 'Dosage', and 'Line Item Insurance (USD)'. We also corrected illogical `Processing_Days` values (where `PQ First Sent to Client Date` was before `PO Sent to Vendor Date`).
-2.  **Time-Based Feature Engineering**: Extracted year, month, day, day of week, week of year, and weekend indicators from all date columns to enable deeper temporal analysis.
-3.  **Correlation Analysis**: Examined relationships between numeric variables to understand dependencies and potential drivers of costs and delays.
-4.  **On-time Delivery Performance**: Analyzed on-time delivery rates across different `Managed By` teams, `Shipment Modes`, and `Countries`, revealing varying levels of efficiency.
-5.  **Delay Analysis**: Quantified average delay times by country, highlighting regions with persistent delivery challenges.
-6.  **Cost per Unit Analysis**: Calculated and analyzed 'Cost per Unit' to standardize cost comparisons across various product groups and vendors.
-7.  **Geographical Visualization**: Utilized choropleth maps to visually represent average processing days and on-time delivery rates by country, identifying geographical patterns and disparities.
+Modern logistics networks operate across multiple countries, vendors, shipment modes, and manufacturing sites, making operational efficiency difficult to monitor at scale.
 
-## Solutions & Approaches for Improvement
-Based on our analysis, we propose the following strategies:
+FedEx faces challenges such as:
 
-1.  **Data Quality & Process Improvement**: Implement robust data validation for date fields and standardize input formats for 'Weight (Kilograms)' and 'Freight Cost (USD)' to prevent inconsistencies.
-2.  **Vendor Performance Optimization**: Establish KPIs for processing days, on-time delivery, and cost efficiency. Collaborate with underperforming vendors to identify root causes and implement improvement plans.
-3.  **Shipment Mode & Route Optimization**: Develop dynamic strategies for selecting shipment modes and routes based on destination country performance, urgency, and cost, leveraging historical data to inform decisions.
-4.  **Product Group Specific Logistics Strategies**: Tailor logistics approaches to the unique needs of different product groups (e.g., prioritize faster modes for high-value/time-sensitive items, optimize for cost for less critical goods).
-5.  **Advanced Analytics & Predictive Modeling**: Build machine learning models to forecast demand, predict potential delays, and optimize resource allocation proactively, enhancing supply chain resilience.
+* Inconsistent delivery timelines
+* Shipment delays across regions
+* Variability in freight costs
+* Vendor performance inefficiencies
+* Data quality inconsistencies in operational systems
 
-## Technical Stack
--   **Python**: Programming language
--   **Pandas**: Data manipulation and analysis
--   **NumPy**: Numerical operations
--   **Matplotlib**: Data visualization
--   **Seaborn**: Enhanced data visualization
--   **Plotly Express**: Interactive geographical visualizations
+This project aims to address these challenges through data-driven analysis and operational intelligence.
 
-## How to Use
-To explore this analysis:
-1.  Clone this repository to your local machine.
-2.  Open the `.ipynb` notebook in Google Colab or any Jupyter-compatible environment.
-3.  Ensure all required Python libraries are installed (`pandas`, `numpy`, `matplotlib`, `seaborn`, `plotly`).
-4.  Run the cells sequentially to reproduce the analysis and visualizations.
+---
 
-Feel free to reach out for any questions or collaborations!
+# Objectives
+
+The primary objectives of this project are:
+
+* Analyze shipment performance and delivery reliability
+* Identify operational bottlenecks causing delays
+* Evaluate cost efficiency across shipment modes and vendors
+* Measure country-wise logistics performance
+* Standardize cost analysis using derived business metrics
+* Build a foundation for predictive supply chain optimization
+
+---
+
+# Dataset Information
+
+### Dataset
+
+`SCMS_Delivery_History_Dataset.csv`
+
+### Dataset Scale
+
+* **Rows:** 10,324
+* **Columns:** 33
+
+### Key Features
+
+#### Shipment Information
+
+* Project Code
+* PO / SO Number
+* ASN / DN Number
+* Shipment ID
+
+#### Logistics Attributes
+
+* Shipment Mode
+* Vendor INCO Terms
+* Fulfillment Method
+* Managed By
+
+#### Geographical Features
+
+* Country
+* Manufacturing Site
+
+#### Financial Metrics
+
+* Freight Cost (USD)
+* Line Item Value
+* Unit Price
+* Insurance Cost
+
+#### Time Features
+
+* Scheduled Delivery Date
+* Delivered to Client Date
+* PO Sent Date
+* Delivery Recorded Date
+
+#### Product Information
+
+* Product Group
+* Brand
+* Dosage
+* Molecule/Test Type
+
+---
+
+# Technical Stack
+
+| Category              | Technologies                    |
+| --------------------- | ------------------------------- |
+| Programming           | Python                          |
+| Data Processing       | Pandas, NumPy                   |
+| Visualization         | Matplotlib, Seaborn             |
+| Interactive Analytics | Plotly Express                  |
+| Notebook Environment  | Jupyter Notebook / Google Colab |
+
+---
+
+# Data Engineering & Preprocessing
+
+## Data Cleaning
+
+Performed comprehensive preprocessing to improve dataset quality:
+
+* Handled missing values in critical logistics fields
+* Corrected invalid or inconsistent date relationships
+* Standardized numerical columns
+* Removed illogical processing records
+* Fixed datatype inconsistencies
+
+## Feature Engineering
+
+Generated additional operational features including:
+
+* Processing Days
+* Delivery Delay
+* Cost per Unit
+* Weekday / Weekend indicators
+* Month, Quarter, and Year features
+* Week-of-Year analytics
+
+These derived metrics enabled deeper operational and temporal analysis.
+
+---
+
+# Exploratory Data Analysis
+
+## 1. Delivery Performance Analysis
+
+Evaluated on-time delivery rates across:
+
+* Shipment Modes
+* Countries
+* Vendors
+* Operational Teams
+
+### Key Insight
+
+Certain shipment modes consistently underperformed in specific regions, indicating route-level inefficiencies.
+
+---
+
+## 2. Delay Analysis
+
+Measured average delivery delays by country and logistics configuration.
+
+### Key Insight
+
+Several regions exhibited significantly higher processing times, suggesting infrastructure or customs-related bottlenecks.
+
+---
+
+## 3. Freight Cost Optimization
+
+Analyzed freight costs relative to:
+
+* Shipment weight
+* Product categories
+* Shipment modes
+* Vendor operations
+
+### Key Insight
+
+Air shipments delivered faster turnaround times but introduced disproportionately higher freight costs for low-priority products.
+
+---
+
+## 4. Correlation Analysis
+
+Performed correlation analysis across numerical operational metrics.
+
+### Observations
+
+* Freight cost strongly correlated with shipment weight
+* Longer processing times increased total logistics cost
+* Certain vendors demonstrated higher operational consistency
+
+---
+
+## 5. Geospatial Analysis
+
+Built choropleth visualizations to analyze:
+
+* Country-wise processing delays
+* On-time delivery performance
+* Regional logistics efficiency
+
+### Key Insight
+
+Geographical patterns revealed clear disparities in supply chain efficiency across regions.
+
+---
+
+# Business Recommendations
+
+## 1. Vendor Performance Monitoring
+
+Introduce KPI-based vendor evaluation frameworks using:
+
+* On-time delivery %
+* Average processing time
+* Freight cost efficiency
+* Delay frequency
+
+---
+
+## 2. Intelligent Shipment Mode Selection
+
+Develop rule-based or ML-driven shipment optimization systems that dynamically choose:
+
+* Cost-efficient routes
+* Optimal shipment modes
+* Delivery-time-aware transportation methods
+
+---
+
+## 3. Data Quality Governance
+
+Implement validation pipelines for:
+
+* Date consistency
+* Freight cost anomalies
+* Missing operational records
+* Weight standardization
+
+---
+
+## 4. Predictive Supply Chain Analytics
+
+Future improvements may include:
+
+* Delivery delay prediction models
+* Demand forecasting
+* Logistics cost forecasting
+* Route optimization algorithms
+
+---
+
+# Key Outcomes
+
+* Improved visibility into logistics inefficiencies
+* Identified high-delay regions and shipment bottlenecks
+* Standardized operational cost analysis
+* Built scalable analytical workflows for logistics intelligence
+* Established a strong foundation for predictive supply chain optimization
+
+---
+
+# Future Enhancements
+
+Potential future work includes:
+
+* Machine Learning-based ETA prediction
+* Real-time logistics dashboards
+* Supply chain anomaly detection
+* Route optimization using graph algorithms
+* Automated KPI monitoring pipelines
+
+---
+
+# Repository Structure
+
+```bash
+FedEx-Logistics-Analysis/
+│
+├── data/
+│   └── SCMS_Delivery_History_Dataset.csv
+│
+├── notebooks/
+│   └── fedex_logistics_analysis.ipynb
+│
+├── visualizations/
+│   └── charts_and_maps/
+│
+├── README.md
+└── requirements.txt
 ```
+
+---
+
+# How to Run
+
+## 1. Clone Repository
+
+```bash
+git clone <repository-url>
+```
+
+## 2. Install Dependencies
+
+```bash
+pip install pandas numpy matplotlib seaborn plotly
+```
+
+## 3. Launch Notebook
+
+```bash
+jupyter notebook
+```
+
+Open the notebook and execute cells sequentially.
+
+---
+
+# Conclusion
+
+This project demonstrates how data analytics can be applied to large-scale logistics operations to uncover operational inefficiencies, optimize transportation strategies, and improve supply chain reliability.
+
+By combining data preprocessing, feature engineering, visualization, and operational analytics, the project provides actionable business insights that can support intelligent logistics decision-making at enterprise scale.
